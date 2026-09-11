@@ -1,0 +1,39 @@
+MYSTERY FUNCTION — annotate every line, then answer the questions.
+===================================================================
+
+This is real XC8 output (-O2) for a small C function, symbols
+stripped. Registers: 0x01 and 0x02 are compiler scratch locations in
+the access bank. On entry, the argument is in W. On exit, the result
+is in W. STATUS is at 0xd8; bit 2 of STATUS is the Z (zero) flag.
+
+Write what EACH line does on the right, then answer below.
+
+00001002 <_f>:
+    1002:  movwf   0x2, a        ; _____________________________________
+    1004:  clrf    0x1, a        ; _____________________________________
+    1006:  bra     0x100e        ; _____________________________________
+    1008:  decf    0x2, w, a     ; _____________________________________
+    100a:  andwf   0x2, f, a     ; _____________________________________
+    100c:  incf    0x1, f, a     ; _____________________________________
+    100e:  movf    0x2, w, a     ; _____________________________________
+    1010:  btfss   0xd8, 0x2, a  ; _____________________________________
+    1012:  bra     0x1008        ; _____________________________________
+    1014:  movf    0x1, w, a     ; _____________________________________
+    1016:  return                ; _____________________________________
+
+QUESTIONS (answer in comments below your annotations):
+
+Q1. What does this function compute? Write the equivalent C.
+
+Q2. The loop body is `v = v & (v - 1)`. What does that operation do
+    to v in ONE step? (Hint: try v = 0b10110000 on paper.)
+
+Q3. For input 0xB7, how many times does the loop body execute?
+    How many times would a shift-8-times implementation loop?
+
+Q4. Why does the compiler put `movf 0x2, w` + `btfss STATUS,Z` at
+    the BOTTOM of the loop with a `bra` jumping into it, instead of
+    testing at the top?
+
+Q5. Cycle count both implementations (this one vs. your shift-loop
+    popcount from interview.S) for input 0x80. Which wins? For 0xFF?
